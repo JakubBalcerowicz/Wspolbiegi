@@ -33,7 +33,7 @@ char* adres;
 typedef enum { false,
     true } bool;
 
-//Struktura pionka gracza (wspolrzedne x,y, rozmiar i ID gracza oraz status (aktywny gracz , berek, uciekajacy)
+//Struktura gracza
 typedef struct circle {
     int x;
     int y;
@@ -77,7 +77,7 @@ void firts_player_status(circle* circles)
         circles[i].visited[13] = 0;
     }
 }
-
+//zmienia ture wszytskim graczom
 void changeTurn(circle* circles)
 {
     int i;
@@ -85,7 +85,7 @@ void changeTurn(circle* circles)
         circles[i].turnNumber = circles[i].turnNumber + 1;
     }
 }
-
+//zmienia wartosci na mapie (odwiedzone grzyby zmienia wartosc polna na 0)
 void change_map_status(circle* circles, int actualplace)
 {
     int i;
@@ -93,7 +93,7 @@ void change_map_status(circle* circles, int actualplace)
         circles[i].visited[actualplace] = 0;
     }
 }
-
+//wraca wsporzedna Y dla gracza do zmiany pozycji w oknie
 int returnY(int position, int id)
 {
     int i = position;
@@ -117,7 +117,7 @@ int returnY(int position, int id)
         return temp = tablica3[i];
     }
 }
-
+//wraca wsporzedna X dla gracza do zmiany pozycji w oknie
 int returnX(int position)
 {
     int i = position;
@@ -149,7 +149,7 @@ int new_player(circle* circles)
     }
     return i;
 }
-
+//Funkcja losujaca wartosc (kostki do gry od 1 do 6)
 int number(int id)
 {
     srand(time(0));
@@ -169,12 +169,12 @@ void overview_game(circle* circles, int id)
     XFillArc(mydisplay, mywindow, mygc, 255, 115, 60, 60, 0, 360 * 64);
     XFillArc(mydisplay, mywindow, mygc, 335, 115, 60, 60, 0, 360 * 64);
     XFillArc(mydisplay, mywindow, mygc, 405, 115, 60, 60, 0, 360 * 64);
-
+    //grzyby pole[2]
     if (circles[id].visited[2] > 0) {
         XSetForeground(mydisplay, mygc, mycolor5.pixel);
         XFillArc(mydisplay, mywindow, mygc, 195, 130, 20, 20, 0, 360 * 64);
     }
-    //rysuje grzyby
+    //grzyby pole[5]
     if (circles[id].visited[5] > 0) {
         XSetForeground(mydisplay, mygc, mycolor5.pixel);
         XFillArc(mydisplay, mywindow, mygc, 425, 120, 20, 20, 0, 360 * 64);
@@ -193,7 +193,7 @@ void overview_game(circle* circles, int id)
     XFillArc(mydisplay, mywindow, mygc, 485, 275, 60, 60, 0, 360 * 64);
     XFillArc(mydisplay, mywindow, mygc, 405, 275, 60, 60, 0, 360 * 64);
 
-    //grzyb
+    //grzyb pole[9]
     if (circles[id].visited[9] > 0) {
         XSetForeground(mydisplay, mygc, mycolor5.pixel);
         XFillArc(mydisplay, mywindow, mygc, 425, 295, 20, 20, 0, 360 * 64);
@@ -205,8 +205,8 @@ void overview_game(circle* circles, int id)
     XFillArc(mydisplay, mywindow, mygc, 255, 355, 60, 60, 0, 360 * 64);
     XSetForeground(mydisplay, mygc, mycolor5.pixel);
 
-    //informacj ao koncu
-
+    //rozstrzyganie wyniku gry
+    
     if (number_of_end(circles) == number_of_players(circles)) {
         int i;
         int max = 0;
@@ -229,10 +229,9 @@ void overview_game(circle* circles, int id)
         }
     }
 
-    //XFlush(mydisplay)
     int i;
     char napis[2]; //punkty gracza
-    char legendaID[1];
+    char legendaID[1]; // ID gracza
 
     if (id == 3) {
         printf("Nie mozesz dolaczyc do gry! Max liczba graczy to: %d\n", id - 1);
@@ -243,11 +242,7 @@ void overview_game(circle* circles, int id)
         for (i = 1; i < 6; i++) {
             if (circles[i].active_player == true) {
 
-                //Wyswietlanie nr gracza (id) oraz wspolrzednych x , y w terminalu przy kazdym ruchu
-                //printf("GRACZ: %d\n", id);
-                //printf("Twoje aktualne polozenie: x=%d y=%d\n", circles[i].x, circles[i].y);
-
-                //Inni gracze (pozostale kolory)
+                //Drukowanie graczy
 
                 if (circles[i].ID == 1) {
                     XSetForeground(mydisplay, mygc, mycolor0.pixel);
@@ -290,7 +285,7 @@ void overview_game(circle* circles, int id)
         }
     }
 }
-//Ilosc "aktywnych" graczy
+//Ilosc aktywnych graczy
 int number_of_players(circle* circles)
 {
 
@@ -303,6 +298,7 @@ int number_of_players(circle* circles)
     }
     return number_players;
 }
+//ilosc graczy ktorzy zakonczyli gre
 int number_of_end(circle* circles)
 {
 
@@ -316,7 +312,7 @@ int number_of_end(circle* circles)
     return number_players;
 }
 
-//Funkcja obslugujaca rozgrywke, sterowanie, wyjscie z programu
+//Funkcja obslugujaca rozgrywke, wyjscie z programu
 int game(circle* circles, int id)
 {
 
@@ -368,7 +364,6 @@ int game(circle* circles, int id)
                 }
 
                 //STEROWANIE ZA POMOCA KLAWIATURY
-                //if(id = circles[1].turnNumber){
                 //STRZALKA W PRAWO
                 if (myevent.xkey.keycode == 0x72 && id == (circles[1].turnNumber % 2) + 1) {
                     XSetForeground(mydisplay, mygc, mycolor.pixel);
@@ -382,7 +377,7 @@ int game(circle* circles, int id)
                     circles[id].y = returnY(circles[id].place, id);
                     if (circles[id].place >= 13) {
                         circles[id].endGame = true;
-                        //changeTurn(circles);
+
                     }
                     if (circles[id].visited[circles[id].place] > 0 && circles[id].place < 12) {
                         circles[id].score = circles[id].score + circles[id].visited[circles[id].place];
