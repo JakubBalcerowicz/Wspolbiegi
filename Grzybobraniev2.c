@@ -81,7 +81,7 @@ void firts_player_status(circle* circles)
 void changeTurn(circle* circles)
 {
     int i;
-    for (i = 1; i < 6; i++) {
+    for (i = 1; i < 4; i++) {
         circles[i].turnNumber = circles[i].turnNumber + 1;
     }
 }
@@ -89,7 +89,7 @@ void changeTurn(circle* circles)
 void change_map_status(circle* circles, int actualplace)
 {
     int i;
-    for (i = 1; i < 6; i++) {
+    for (i = 1; i < 4; i++) {
         circles[i].visited[actualplace] = 0;
     }
 }
@@ -141,7 +141,7 @@ int new_player(circle* circles)
 
     int i;
 
-    for (i = 1; i < 6; i++) {
+    for (i = 1; i < 4; i++) {
         if (circles[i].active_player == false) {
             circles[i].active_player = true;
             break;
@@ -217,7 +217,7 @@ void overview_game(circle* circles, int id)
             XDrawString(mydisplay, mywindow, mygc, 220, 240, buf1, strlen(buf1));
         }
         else {
-            for (i = 1; i < 6; i++) {
+            for (i = 1; i < 4; i++) {
                 if (circles[i].score > max) {
                     max = circles[i].score;
                     winID = i;
@@ -239,7 +239,7 @@ void overview_game(circle* circles, int id)
 
     else {
 
-        for (i = 1; i < 6; i++) {
+        for (i = 1; i < 4; i++) {
             if (circles[i].active_player == true) {
 
                 //Drukowanie graczy
@@ -268,17 +268,12 @@ void overview_game(circle* circles, int id)
                     sprintf(legendaID, "%d", circles[i].score);
                     XDrawString(mydisplay, mywindow, mygc, 10, 400, legendaID, strlen(legendaID));
                 }
-                if (circles[i].ID == 4) {
+                /*if (circles[i].ID == 4) {
                     XSetForeground(mydisplay, mygc, mycolor4.pixel);
                     sprintf(napis, "%d", circles[i].ID);
                     XDrawString(mydisplay, mywindow, mygc, circles[i].x, circles[i].y, napis, strlen(napis));
-                }
-                if (circles[i].ID == 5) {
-                    XSetForeground(mydisplay, mygc, mycolor5.pixel);
-                    sprintf(napis, "%d", circles[i].ID);
-                    XDrawString(mydisplay, mywindow, mygc, circles[i].x, circles[i].y, napis, strlen(napis));
-                }
-
+                }*/
+ 
                 XFillArc(mydisplay, mywindow, mygc, circles[i].x, circles[i].y, circles[i].size - 40, circles[i].size - 40, 0, 360 * 64);
                 XFlush(mydisplay);
             }
@@ -291,7 +286,7 @@ int number_of_players(circle* circles)
 
     int i, number_players = 0;
 
-    for (i = 1; i < 6; i++) {
+    for (i = 1; i < 4; i++) {
         if (circles[i].active_player == true) {
             number_players++;
         }
@@ -304,7 +299,7 @@ int number_of_end(circle* circles)
 
     int i, number_players = 0;
 
-    for (i = 1; i < 6; i++) {
+    for (i = 1; i < 4; i++) {
         if (circles[i].endGame == true) {
             number_players++;
         }
